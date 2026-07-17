@@ -1,6 +1,6 @@
 # zcode-toolbar-wallpaper
 
-![preview](preview.jpg)
+![preview](preview.jpg?v=2)
 
 给 [ZCode](https://github.com/nicepkg/zcode)（Electron 应用）工具栏加一个「更换壁纸」按钮，点击即可一键换图，旁边附带遮罩浓度滑块。
 
