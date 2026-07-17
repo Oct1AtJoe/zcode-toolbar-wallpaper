@@ -24,15 +24,14 @@ set "ZCODE_EXE="
 echo [launcher] Step 0: locate ZCode.exe
 REM  Strategy (in order):
 REM    1. ZCODE_EXE env var  (user override)
-REM    2. Get-Process         (ZCode is already running)
-REM    3. PATH lookup         (where ZCode)
-REM    4. Default locations   (common Electron install dirs)
-REM    5. Registry            (App Paths key)
-REM  First match wins.
+REM    2. Default locations   (common Electron install dirs, fast if-exist)
+REM    3. Get-Process         (ZCode is already running)
+REM    4. Registry            (App Paths key)
+REM  First match wins. Default paths checked BEFORE Get-Process because
+REM  for/f+powershell can hang under hidden cmd (WScript.Shell launch).
 if defined ZCODE_EXE if exist "%ZCODE_EXE%" goto :found
+for %%D in ("%LOCALAPPDATA%\Programs\ZCode\ZCode.exe" "%USERPROFILE%\scoop\apps\zcode\current\ZCode.exe" "C:\Program Files\ZCode\ZCode.exe" "C:\Program Files (x86)\ZCode\ZCode.exe" "D:\soft\zcode\ZCode.exe" "D:\zcode\ZCode.exe") do if exist "%%~D" (set "ZCODE_EXE=%%~D" & goto :found)
 for /f "delims=" %%P in ('powershell -NoProfile -Command "try{(Get-Process ZCode -ErrorAction Stop|Select-Object -First 1 -ExpandProperty Path)}catch{}" 2^>nul') do if exist "%%P" (set "ZCODE_EXE=%%P" & goto :found)
-for /f "delims=" %%P in ('where ZCode.exe 2^>nul') do if exist "%%P" (set "ZCODE_EXE=%%P" & goto :found)
-for %%D in ("%LOCALAPPDATA%\Programs\ZCode\ZCode.exe" "%USERPROFILE%\scoop\apps\zcode\current\ZCode.exe" "C:\Program Files\ZCode\ZCode.exe" "C:\Program Files (x86)\ZCode\ZCode.exe") do if exist %%D (set "ZCODE_EXE=%%~D" & goto :found)
 for /f "tokens=2,*" %%A in ('reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\ZCode.exe" /ve 2^>nul ^| findstr /i "REG_SZ"') do if exist "%%B" (set "ZCODE_EXE=%%B" & goto :found)
 echo [launcher] ERROR: ZCode.exe not found.
 echo [launcher] Set ZCODE_EXE env var, or add ZCode to PATH.
