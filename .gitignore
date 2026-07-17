@@ -11,3 +11,5 @@ wallpapers/*.gif
 .vbs.log
 .DS_Store
 *.lnk
+graphify-out/
+AGENTS.md
