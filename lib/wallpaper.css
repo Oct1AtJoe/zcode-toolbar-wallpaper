@@ -1,0 +1,34 @@
+/* ============================================================
+   ZCode wallpaper CSS -- injected via CDP, no app.asar edits.
+   ============================================================
+   Full-screen transparent mode:
+   1. Wallpaper on body (cover, fixed)
+   2. All UI background variables / Tailwind classes forced transparent
+   3. No alpha knob -- transparent or not, no middle ground.
+   ============================================================ */
+
+body {
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+.theme-zai-dark,
+.theme-zai-light {
+  --color-background: transparent !important;
+  --color-background-alt: transparent !important;
+  --color-background-win-alt: transparent !important;
+}
+
+.bg-background,
+.bg-background-alt,
+.bg-background-win-alt,
+.bg-surface {
+  background-color: transparent !important;
+}
+
+.bg-input,
+.focus-within\:bg-input-focused {
+  background-color: transparent !important;
+}

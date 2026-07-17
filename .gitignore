@@ -1,0 +1,12 @@
+node_modules/
+wallpapers-thumb/
+wallpapers/*.png
+wallpapers/*.jpg
+wallpapers/*.jpeg
+wallpapers/*.webp
+wallpapers/*.gif
+.wallpaper.json
+*.tmp.css
+.start.log
+.vbs.log
+.DS_Store

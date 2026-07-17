@@ -1,0 +1,19 @@
+{
+  "name": "zcode-toolbar-wallpaper",
+  "version": "1.0.0",
+  "description": "给 ZCode (Electron) 工具栏加壁纸按钮，一键换图 + 遮罩变暗",
+  "main": "lib/server.cjs",
+  "scripts": {
+    "start": "node lib/server.cjs",
+    "inject": "node lib/inject.cjs",
+    "remove": "node lib/inject.cjs --remove",
+    "resize": "node lib/resize.cjs",
+    "test": "node test/inject-test.cjs && node test/wallpaper-pick-test.cjs && node test/resize-test.cjs && node test/state-test.cjs && node test/server-test.cjs"
+  },
+  "keywords": ["zcode", "wallpaper", "electron", "cdp", "toolbar"],
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.18.0",
+    "sharp": "^0.35.1"
+  }
+}
