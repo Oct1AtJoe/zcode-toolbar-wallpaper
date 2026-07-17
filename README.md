@@ -148,6 +148,10 @@ wallpapers/            放原图
 wallpapers-thumb/      缩图输出 (gitignore)
 ```
 
+## 致谢
+
+本项目基于 [zzh-learner/zcode-wallpaper](https://github.com/zzh-learner/zcode-wallpaper) 改造而来，在此基础上新增了工具栏按钮、遮罩浓度滑块、dim 持久化等功能。感谢原作者的工作。
+
 ## License
 
 MIT
