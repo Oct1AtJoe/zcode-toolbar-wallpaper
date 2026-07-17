@@ -10,3 +10,4 @@ wallpapers/*.gif
 .start.log
 .vbs.log
 .DS_Store
+*.lnk
