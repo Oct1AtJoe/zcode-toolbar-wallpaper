@@ -1,0 +1,82 @@
+/* ============================================================
+   ZCode skin CSS -- injected via CDP, no app.asar edits.
+   ============================================================
+   Two parts (font @font-face is assembled at runtime by
+   skin-inject.cjs from lib/fonts/*.woff2 as base64 data URIs,
+   so this file stays human-readable):
+     1. Font family override (--font-sans -> Assistant first)
+     2. Frosted-glass skin for the left task sidebar
+        (migrated from the asar-injected ZCODE_GLASS:frosted-v2)
+
+   Inject order matters: this <style id="zcode-user-skin"> is
+   appended AFTER <style id="zcode-user-wallpaper"> so the
+   sidebar's rgba frosted bg wins over wallpaper.css's
+   transparent. Specificity also favors the skin (nested
+   .dark [class*=...] .bg-sidebar beats bare .bg-sidebar).
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   1. Font family override
+   Non-layered :root rule outranks the original @layer theme
+   definition, so no !important needed. Assistant is loaded
+   via @font-face (4 weights, injected by skin-inject.cjs);
+   if the font fails to load it falls back to Microsoft
+   YaHei UI -> Microsoft YaHei -> system-ui.
+   ---------------------------------------------------------- */
+:root,
+:host {
+  --font-sans: "Assistant", "Microsoft YaHei UI", "Microsoft YaHei",
+    system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* ----------------------------------------------------------
+   2. Frosted-glass skin -- left task sidebar only.
+   Selector targets the workspace-sidebar-panel-width container
+   and its bg-sidebar children. Main editor area is untouched.
+   ---------------------------------------------------------- */
+
+/* 2.1 Outer width container: transparent bg + backdrop blur.
+   The blur needs something behind it to frosted-render; with a
+   wallpaper on <body> the sidebar frosts the wallpaper. */
+.dark [class*="workspace-sidebar-panel-width"] {
+  -webkit-backdrop-filter: blur(20px) saturate(1.12) !important;
+  backdrop-filter: blur(20px) saturate(1.12) !important;
+}
+
+/* 2.2 Inner bg-sidebar / bg-sidebar/80: translucent dark base
+   (the frosted milk-glass底). rgba(22,22,22,0.30) over wallpaper
+   gives a dark smoked look while letting the image bleed through. */
+.dark [class*="workspace-sidebar-panel-width"] .bg-sidebar,
+.dark [class*="workspace-sidebar-panel-width"] .bg-sidebar\/80 {
+  background-color: rgba(22, 22, 22, 0.30) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.12) !important;
+  backdrop-filter: blur(20px) saturate(1.12) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 2.3 Remove the sidebar's right border line for a more
+   immersive, edge-less feel against the main area. */
+.dark .min-h-0.border-border.border-r.bg-sidebar {
+  border-right: none !important;
+}
+
+/* 2.4 Cards / sub-panels inside the sidebar: lighter frosted
+   treatment so panels read as a layer above the sidebar base. */
+.dark [class*="workspace-sidebar-panel-width"] .bg-card,
+.dark [class*="workspace-sidebar-panel-width"] .bg-muted {
+  background-color: rgba(43, 43, 43, 0.40) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.08) !important;
+  backdrop-filter: blur(14px) saturate(1.08) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* 2.5 Sidebar scrollbar: translucent so it doesn't punch through
+   the frosted look. */
+.dark [class*="workspace-sidebar-panel-width"] ::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+.dark [class*="workspace-sidebar-panel-width"] ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.30) !important;
+}

@@ -12,6 +12,8 @@
 - **壁纸注入**：通过 CDP（Chrome DevTools Protocol）将图片设为 ZCode 背景
 - **持久化**：记住上次设的壁纸，ZCode 重启后自动恢复
 - **图片缩放**：自动将大图缩到 2560px（JPEG 85%），避免 Electron 渲染卡顿
+- **字体皮肤**：把 ZCode 界面字体换成 Assistant（与 WorkBuddy 一致），4 个字重（Regular/Medium/SemiBold/Bold），woff2 随项目自带，由 HTTP server 提供给浏览器加载，非侵入不改 app.asar
+- **毛玻璃侧边栏**：左侧任务侧边栏毛玻璃磨砂效果（`backdrop-filter: blur(20px)` + 半透明深色底），透出壁纸，仅作用侧边栏，主编辑区不受影响
 
 ## 安装
 
@@ -55,10 +57,22 @@ npm install
 3. 缩放 `wallpapers/` 中的图片到 `wallpapers-thumb/`
 4. 启动后台 HTTP server（端口 18923）
 5. 恢复上次的壁纸和遮罩浓度
+6. 注入皮肤（Assistant 字体 + 毛玻璃侧边栏）
 
 启动后约 3 秒内，ZCode 左上角工具栏会出现按钮和滑块。
 
 > **再点一次 `start.vbs`** = 停旧 server + 重启（不用去任务管理器杀进程）。
+
+#### 桌面快捷方式（推荐）
+
+不想每次进文件夹双击？建一个桌面快捷方式：
+
+1. 右键 `start.vbs` → **创建快捷方式**（生成「start.vbs - 快捷方式」）
+2. 把它重命名为你想要的名字（如「ZCode 壁纸」）
+3. （可选）右键快捷方式 → **属性** → **更改图标** → 选一个 `.ico` 文件（ZCode 自带的图标在 `ZCode 安装目录\resources\tray_icon.ico`）
+4. 把快捷方式剪切粘贴到桌面
+
+以后双击桌面图标即可一键启动 ZCode + 壁纸 + 皮肤。
 
 ### 6. 使用
 
@@ -103,6 +117,16 @@ curl -X POST http://127.0.0.1:18923/api/action \
   -H "Content-Type: application/json" \
   -d '{"action":"remove"}'
 
+# 注入皮肤（Assistant 字体 + 毛玻璃侧边栏）
+curl -X POST http://127.0.0.1:18923/api/action \
+  -H "Content-Type: application/json" \
+  -d '{"action":"injectSkin"}'
+
+# 移除皮肤
+curl -X POST http://127.0.0.1:18923/api/action \
+  -H "Content-Type: application/json" \
+  -d '{"action":"removeSkin"}'
+
 # 实时调整遮罩透明度 (0-100，不触发换壁纸)
 curl -X POST http://127.0.0.1:18923/api/action \
   -H "Content-Type: application/json" \
@@ -120,6 +144,8 @@ curl -X POST http://127.0.0.1:18923/api/action \
 | `ZCODE_DEBUG_HOST` | 127.0.0.1 | CDP 主机地址 |
 | `ZCODE_WP_DIM` | 60 | 遮罩透明度 (0-100，0=不遮) |
 | `ZCODE_WP_CSS` | - | 直接指定 CSS 文件（跳过随机选图） |
+| `ZCODE_SKIN_PORT` | 18923 | 皮肤字体文件 HTTP 服务端口（@font-face 加载用） |
+| `ZCODE_SKIN_HOST` | 127.0.0.1 | 皮肤字体服务主机 |
 
 ## 测试
 
@@ -127,7 +153,7 @@ curl -X POST http://127.0.0.1:18923/api/action \
 npm test
 ```
 
-73 个测试覆盖：纯函数（inject/buildExpression、pickButton、resize、state）+ server API 端点。
+104 个测试覆盖：纯函数（inject/buildExpression、skin/buildSkinExpression、pickButton、resize、state）+ server API 端点。
 
 ## 项目结构
 
@@ -135,12 +161,15 @@ npm test
 lib/
   cdp.cjs              CDP 连接/目标列表
   inject.cjs           壁纸注入引擎 (图片 + remove + dim 持久化)
+  skin-inject.cjs      皮肤注入引擎 (字体 + 毛玻璃 + remove)
   wallpaper-pick.cjs   工具栏按钮 + 遮罩滑块注入
   wallpaper-dim.cjs    遮罩变暗（实时调节）
   resize.cjs           图片缩放 (sharp)
-  server.cjs           HTTP server (pickWallpaper action)
+  server.cjs           HTTP server (pickWallpaper/injectSkin + /fonts 字体)
   state.cjs            .wallpaper.json 持久化
   wallpaper.css        UI 透明层 CSS
+  skin.css             皮肤 CSS (字体覆盖 + 毛玻璃规则)
+  fonts/               Assistant woff2 字体 (4 字重)
 bin/
   launch-zcode.bat     启动 ZCode (带 debug port)
   probe.ps1            端口探测脚本

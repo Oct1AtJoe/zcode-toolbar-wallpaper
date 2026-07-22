@@ -51,10 +51,11 @@ powershell -NoProfile -Command "Start-Process -FilePath node -ArgumentList @('\"
 ping -n 3 127.0.0.1 >nul 2>nul
 echo [start]   Server started >> "%LOG%"
 
-REM ---- Step 4: resize + restore ----
-echo [start] Step 4/4: resize + restore ... >> "%LOG%"
+REM ---- Step 4: resize + restore + skin ----
+echo [start] Step 4/4: resize + restore + skin ... >> "%LOG%"
 node "%WP_ROOT%\lib\resize.cjs" >> "%LOG%" 2>&1
 node "%WP_ROOT%\lib\inject.cjs" >> "%LOG%" 2>&1
+node "%WP_ROOT%\lib\skin-inject.cjs" >> "%LOG%" 2>&1
 echo [start]   Done >> "%LOG%"
 
 endlocal

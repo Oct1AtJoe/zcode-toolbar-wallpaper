@@ -8,7 +8,9 @@
     "inject": "node lib/inject.cjs",
     "remove": "node lib/inject.cjs --remove",
     "resize": "node lib/resize.cjs",
-    "test": "node test/inject-test.cjs && node test/wallpaper-pick-test.cjs && node test/resize-test.cjs && node test/state-test.cjs && node test/server-test.cjs"
+    "skin": "node lib/skin-inject.cjs",
+    "skin-remove": "node lib/skin-inject.cjs --remove",
+    "test": "node test/inject-test.cjs && node test/wallpaper-pick-test.cjs && node test/resize-test.cjs && node test/state-test.cjs && node test/server-test.cjs && node test/skin-test.cjs"
   },
   "keywords": ["zcode", "wallpaper", "electron", "cdp", "toolbar"],
   "license": "MIT",
