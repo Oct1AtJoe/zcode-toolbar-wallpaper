@@ -80,3 +80,16 @@
 .dark [class*="workspace-sidebar-panel-width"] ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(255, 255, 255, 0.30) !important;
 }
+
+/* ----------------------------------------------------------
+   3. Frosted-glass on the chat input panel (composer).
+   Targets the bg-input container inside @container/composer --
+   the rounded box holding the textarea. Same frosted params as
+   sidebar cards for visual consistency.
+   ---------------------------------------------------------- */
+.dark [class*="composer"] [class*="bg-input"] {
+  background-color: rgba(43, 43, 43, 0.40) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(1.08) !important;
+  backdrop-filter: blur(14px) saturate(1.08) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}

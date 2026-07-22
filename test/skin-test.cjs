@@ -63,7 +63,7 @@ check("fullCss has scrollbar rule", fullCss.indexOf("scrollbar-thumb") !== -1);
 // font-face comes before skin rules
 check("font-face precedes skin rules", fullCss.indexOf("@font-face") < fullCss.indexOf("--font-sans"));
 // injected CSS should be small (HTTP URLs, not base64) -- under 5KB
-check("fullCss is small (<5KB, no base64)", fullCss.length < 5000);
+check("fullCss is small (<6KB, no base64)", fullCss.length < 6000);
 
 console.log("skin-test: " + pass + " passed, " + fail + " failed");
 process.exit(fail > 0 ? 1 : 0);
