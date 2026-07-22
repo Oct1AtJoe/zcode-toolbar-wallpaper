@@ -12,7 +12,7 @@
 - **壁纸注入**：通过 CDP（Chrome DevTools Protocol）将图片设为 ZCode 背景
 - **持久化**：记住上次设的壁纸，ZCode 重启后自动恢复
 - **图片缩放**：自动将大图缩到 2560px（JPEG 85%），避免 Electron 渲染卡顿
-- **字体皮肤**：把 ZCode 界面字体换成 Assistant（与 WorkBuddy 一致），4 个字重（Regular/Medium/SemiBold/Bold），woff2 随项目自带，由 HTTP server 提供给浏览器加载，非侵入不改 app.asar
+- **字体皮肤**：把 ZCode 界面字体换成 Assistant，4 个字重（Regular/Medium/SemiBold/Bold），woff2 随项目自带，由 HTTP server 提供给浏览器加载，非侵入不改 app.asar
 - **毛玻璃侧边栏**：左侧任务侧边栏毛玻璃磨砂效果（`backdrop-filter: blur(20px)` + 半透明深色底），透出壁纸，仅作用侧边栏，主编辑区不受影响
 
 ## 安装
